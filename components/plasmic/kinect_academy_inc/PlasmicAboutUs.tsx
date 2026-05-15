@@ -82,6 +82,50 @@ import Icon19Icon from "./icons/PlasmicIcon__Icon19"; // plasmic-import: GloFZO7
 import Icon17Icon from "./icons/PlasmicIcon__Icon17"; // plasmic-import: 7W9T4txEOvuQ/icon
 import Icon20Icon from "./icons/PlasmicIcon__Icon20"; // plasmic-import: UKWF1bySvIgm/icon
 
+const emptyProxy: any = new Proxy(() => "", {
+  get(_, prop) {
+    return prop === Symbol.toPrimitive ? () => "" : emptyProxy;
+  }
+});
+
+function wrapQueriesWithLoadingProxy($q: any): any {
+  return new Proxy($q, {
+    get(target, queryName) {
+      const query = target[queryName];
+      return !query || query.isLoading || !query.data ? emptyProxy : query;
+    }
+  });
+}
+
+export type PageCtx = {
+  pageRoute: string;
+  pagePath: string;
+  params: Record<string, string | string[] | undefined>;
+  query: Record<string, string | string[] | undefined>;
+};
+
+export function generateDynamicMetadata($q: any, $ctx: PageCtx) {
+  return {
+    title: "About Us | Kinect Academy Inc.",
+
+    openGraph: {
+      title: "About Us | Kinect Academy Inc.",
+
+      images: [
+        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png"
+      ]
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: "About Us | Kinect Academy Inc.",
+
+      images: [
+        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png"
+      ]
+    }
+  };
+}
+
 createPlasmicElementProxy;
 
 export type PlasmicAboutUs__VariantMembers = {};
@@ -99,6 +143,7 @@ export type PlasmicAboutUs__OverridesType = {
   registerLink?: Flex__<typeof Button2>;
   reveal?: Flex__<typeof Reveal>;
   foreground?: Flex__<"div">;
+  foreground4?: Flex__<"div">;
   foreground3?: Flex__<"div">;
 };
 
@@ -145,33 +190,34 @@ function PlasmicAboutUs__RenderFunc(props: {
 
   const globalVariants = _useGlobalVariants();
 
+  const pageMetadata = generateDynamicMetadata(
+    wrapQueriesWithLoadingProxy({}),
+    $ctx as PageCtx
+  );
+
   const styleTokensClassNames = _useStyleTokens();
 
   return (
     <React.Fragment>
       <Head>
         <meta name="twitter:card" content="summary_large_image" />
-        <title key="title">{PlasmicAboutUs.pageMetadata.title}</title>
-        <meta
-          key="og:title"
-          property="og:title"
-          content={PlasmicAboutUs.pageMetadata.title}
-        />
+        <title key="title">{pageMetadata.title}</title>
+        <meta key="og:title" property="og:title" content={pageMetadata.title} />
         <meta
           key="twitter:title"
           property="twitter:title"
-          content={PlasmicAboutUs.pageMetadata.title}
+          content={pageMetadata.title}
         />
 
         <meta
           key="og:image"
           property="og:image"
-          content={PlasmicAboutUs.pageMetadata.ogImageSrc}
+          content={pageMetadata.ogImageSrc}
         />
         <meta
           key="twitter:image"
           property="twitter:image"
-          content={PlasmicAboutUs.pageMetadata.ogImageSrc}
+          content={pageMetadata.ogImageSrc}
         />
       </Head>
 
@@ -224,6 +270,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__uUfyF
                       )}
                       component={Link}
@@ -257,6 +304,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__frgj
                       )}
                       component={Link}
@@ -289,6 +337,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__xy4Wd
                       )}
                       component={Link}
@@ -324,6 +373,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__uqhR3
                       )}
                       component={Link}
@@ -357,6 +407,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__q27K
                       )}
                       component={Link}
@@ -393,6 +444,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.button,
+                      projectcss.button__qrgzy,
                       projectcss.__wab_text,
                       sty.button__kgaRc
                     )}
@@ -403,6 +455,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__cp1Xo
                     )}
                     component={Link}
@@ -444,6 +497,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                   className={classNames(
                     projectcss.all,
                     projectcss.h1,
+                    projectcss.h1__qrgzy,
                     projectcss.__wab_text,
                     sty.h1__vwtb4
                   )}
@@ -451,14 +505,18 @@ function PlasmicAboutUs__RenderFunc(props: {
                   <React.Fragment>
                     <React.Fragment>{"Join the "}</React.Fragment>
                     <span
-                      className={"plasmic_default__all plasmic_default__span"}
+                      className={
+                        "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                      }
                       style={{ color: "var(--token-Dd6gyjIVe7XT)" }}
                     >
                       {"Kinect"}
                     </span>
                     <React.Fragment>{""}</React.Fragment>
                     <span
-                      className={"plasmic_default__all plasmic_default__span"}
+                      className={
+                        "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                      }
                       style={{ color: "#51D1FF" }}
                     >
                       {" Academy"}
@@ -475,7 +533,9 @@ function PlasmicAboutUs__RenderFunc(props: {
                 >
                   <React.Fragment>
                     <span
-                      className={"plasmic_default__all plasmic_default__span"}
+                      className={
+                        "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                      }
                       style={{ color: "var(--token-Dd6gyjIVe7XT)" }}
                     >
                       {"SENIOR HIGH SCHOOL | GAPAN CITY"}
@@ -581,6 +641,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h2,
+                      projectcss.h2__qrgzy,
                       projectcss.__wab_text,
                       sty.h2__f94
                     )}
@@ -605,6 +666,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                           className={classNames(
                             projectcss.all,
                             projectcss.h1,
+                            projectcss.h1__qrgzy,
                             projectcss.__wab_text,
                             sty.h1__sgxzz
                           )}
@@ -621,7 +683,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                           <React.Fragment>
                             <span
                               className={
-                                "plasmic_default__all plasmic_default__span"
+                                "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
                               }
                               style={{ fontWeight: 700 }}
                             >
@@ -634,7 +696,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                             </React.Fragment>
                             <span
                               className={
-                                "plasmic_default__all plasmic_default__span"
+                                "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
                               }
                               style={{ fontWeight: 700 }}
                             >
@@ -647,7 +709,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                             </React.Fragment>
                             <span
                               className={
-                                "plasmic_default__all plasmic_default__span"
+                                "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
                               }
                               style={{ fontWeight: 700 }}
                             >
@@ -696,6 +758,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3__mZnE
                                 )}
@@ -761,6 +824,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3__ykATk
                                 )}
@@ -780,6 +844,503 @@ function PlasmicAboutUs__RenderFunc(props: {
                               </div>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                  <section
+                    className={classNames(projectcss.all, sty.section__a3Qb)}
+                  >
+                    <div
+                      data-plasmic-name={"foreground4"}
+                      data-plasmic-override={overrides.foreground4}
+                      className={classNames(projectcss.all, sty.foreground4)}
+                    >
+                      <div
+                        className={classNames(
+                          projectcss.all,
+                          sty.freeBox___7Hk4G
+                        )}
+                      >
+                        <h1
+                          className={classNames(
+                            projectcss.all,
+                            projectcss.h1,
+                            projectcss.h1__qrgzy,
+                            projectcss.__wab_text,
+                            sty.h1__g4Y1
+                          )}
+                        >
+                          {"Our Staff"}
+                        </h1>
+                        <div
+                          className={classNames(
+                            projectcss.all,
+                            sty.freeBox__gfnal
+                          )}
+                        >
+                          <div
+                            className={classNames(
+                              projectcss.all,
+                              sty.freeBox__yg5C8
+                            )}
+                          >
+                            <h2
+                              className={classNames(
+                                projectcss.all,
+                                projectcss.h2,
+                                projectcss.h2__qrgzy,
+                                projectcss.__wab_text,
+                                sty.h2__mzept
+                              )}
+                            >
+                              {"Leadership Team"}
+                            </h2>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__pNdd1
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__qb67Z
+                                )}
+                              >
+                                {"Ms. Abbi Salvador"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__wRqo9
+                                )}
+                              >
+                                {"School Administrator"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox___0YY5
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3___7ACdL
+                                )}
+                              >
+                                {"Mr. Oliver Tan"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__iKu3X
+                                )}
+                              >
+                                {"School President"}
+                              </div>
+                            </div>
+                            <h2
+                              className={classNames(
+                                projectcss.all,
+                                projectcss.h2,
+                                projectcss.h2__qrgzy,
+                                projectcss.__wab_text,
+                                sty.h2__egy4F
+                              )}
+                            >
+                              {"Staff"}
+                            </h2>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__jIUx3
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__zs670
+                                )}
+                              >
+                                {"Ms. Glenda Cunanan"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__cq3Pu
+                                )}
+                              >
+                                {"Bookkeeper"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__imuIt
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__fRND
+                                )}
+                              >
+                                {"Mr. Christian De Dios"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text___8GRfm
+                                )}
+                              >
+                                {"Administrative Staff"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__savr4
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__qln6P
+                                )}
+                              >
+                                {"Ms. Charmaine Navarro"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text___66AJm
+                                )}
+                              >
+                                {"Registrar"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__dBmYf
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__lNrFm
+                                )}
+                              >
+                                {"Ms. Nanette Perez"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text___0Hict
+                                )}
+                              >
+                                {"Receptionist"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__eObc
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__qubSu
+                                )}
+                              >
+                                {"Mr. Oliver Ryan Tan"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__eNq67
+                                )}
+                              >
+                                {"IT Administrator"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__m8DHi
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__hYj1H
+                                )}
+                              >
+                                {"Ms. Olivia Joy Tan"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__i0Nez
+                                )}
+                              >
+                                {"HR Manager"}
+                              </div>
+                            </div>
+                            <h2
+                              className={classNames(
+                                projectcss.all,
+                                projectcss.h2,
+                                projectcss.h2__qrgzy,
+                                projectcss.__wab_text,
+                                sty.h2___6Q0K3
+                              )}
+                            >
+                              {"Faculty"}
+                            </h2>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__o8U6
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__dZgyz
+                                )}
+                              >
+                                {"Mr. Pol John Bolante"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__kyxgI
+                                )}
+                              >
+                                {"Academic Head"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__ejoaV
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3___9OYzo
+                                )}
+                              >
+                                {"Ms. Terence Marie Castillo"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text___2Udod
+                                )}
+                              >
+                                {"Academic Head"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__r6Sf7
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3___5YdGs
+                                )}
+                              >
+                                {"Ms. Jim Rose Cuaresma"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text___7CLl6
+                                )}
+                              >
+                                {"Faculty Member"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox___8Ca28
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__lWmP
+                                )}
+                              >
+                                {"Mr. John Marco De Guzman"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__olMeb
+                                )}
+                              >
+                                {"Faculty Member"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__xVebq
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__kzEj4
+                                )}
+                              >
+                                {"Mr. Billy Franco"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__eMkvG
+                                )}
+                              >
+                                {"Faculty Member"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__uzemC
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3___8Whcg
+                                )}
+                              >
+                                {"Mr. Jayson Jimenez"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__tso5A
+                                )}
+                              >
+                                {"Faculty Member"}
+                              </div>
+                            </div>
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                sty.freeBox__pjhUj
+                              )}
+                            >
+                              <h3
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.h3,
+                                  projectcss.h3__qrgzy,
+                                  projectcss.__wab_text,
+                                  sty.h3__mTg2
+                                )}
+                              >
+                                {"Mr. John Cedrick Pablo"}
+                              </h3>
+                              <div
+                                className={classNames(
+                                  projectcss.all,
+                                  projectcss.__wab_text,
+                                  sty.text__p58
+                                )}
+                              >
+                                {"Faculty Member"}
+                              </div>
+                            </div>
+                          </div>
+                          <PlasmicImg__
+                            alt={""}
+                            className={classNames(sty.img__pMjVm)}
+                            displayHeight={"auto"}
+                            displayMaxHeight={"none"}
+                            displayMaxWidth={"200px"}
+                            displayMinHeight={"0"}
+                            displayMinWidth={"0"}
+                            displayWidth={"auto"}
+                            loading={"lazy"}
+                            src={{
+                              src: "/plasmic/kinect_academy_inc/images/kinectCircleV2Png.png",
+                              fullWidth: 2400,
+                              fullHeight: 2400,
+                              aspectRatio: undefined
+                            }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -804,6 +1365,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                   className={classNames(
                     projectcss.all,
                     projectcss.h2,
+                    projectcss.h2__qrgzy,
                     projectcss.__wab_text,
                     sty.h2__eThI5
                   )}
@@ -883,6 +1445,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                               className={classNames(
                                 projectcss.all,
                                 projectcss.h3,
+                                projectcss.h3__qrgzy,
                                 projectcss.__wab_text,
                                 sty.h3__nkHbb
                               )}
@@ -976,6 +1539,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                               className={classNames(
                                 projectcss.all,
                                 projectcss.h3,
+                                projectcss.h3__qrgzy,
                                 projectcss.__wab_text,
                                 sty.h3__lb0PY
                               )}
@@ -1035,6 +1599,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                 className={classNames(
                   projectcss.all,
                   projectcss.h2,
+                  projectcss.h2__qrgzy,
                   projectcss.__wab_text,
                   sty.h2__q58GK
                 )}
@@ -1285,6 +1850,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3__d5BgN
                     )}
@@ -1295,6 +1861,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__yl4De
                     )}
                     component={Link}
@@ -1327,6 +1894,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__lbsoX
                     )}
                     component={Link}
@@ -1359,6 +1927,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__fsZ4H
                     )}
                     component={Link}
@@ -1393,6 +1962,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3___5V5Pr
                     )}
@@ -1403,6 +1973,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__adjV8
                     )}
                     component={Link}
@@ -1435,6 +2006,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__vilb7
                     )}
                     component={Link}
@@ -1467,6 +2039,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__q1SSt
                     )}
                     component={Link}
@@ -1499,6 +2072,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link___44W4C
                     )}
                     component={Link}
@@ -1533,6 +2107,7 @@ function PlasmicAboutUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3__xVsEr
                     )}
@@ -1592,12 +2167,14 @@ const PlasmicDescendants = {
     "registerLink",
     "reveal",
     "foreground",
+    "foreground4",
     "foreground3"
   ],
   foreground2: ["foreground2", "registerLink"],
   registerLink: ["registerLink"],
-  reveal: ["reveal", "foreground"],
+  reveal: ["reveal", "foreground", "foreground4"],
   foreground: ["foreground"],
+  foreground4: ["foreground4"],
   foreground3: ["foreground3"]
 } as const;
 type NodeNameType = keyof typeof PlasmicDescendants;
@@ -1609,6 +2186,7 @@ type NodeDefaultElementType = {
   registerLink: typeof Button2;
   reveal: typeof Reveal;
   foreground: "div";
+  foreground4: "div";
   foreground3: "div";
 };
 
@@ -1678,20 +2256,19 @@ export const PlasmicAboutUs = Object.assign(
     registerLink: makeNodeComponent("registerLink"),
     reveal: makeNodeComponent("reveal"),
     foreground: makeNodeComponent("foreground"),
+    foreground4: makeNodeComponent("foreground4"),
     foreground3: makeNodeComponent("foreground3"),
 
     // Metadata about props expected for PlasmicAboutUs
     internalVariantProps: PlasmicAboutUs__VariantProps,
     internalArgProps: PlasmicAboutUs__ArgProps,
 
-    // Page metadata
-    pageMetadata: {
-      title: "About Us | Kinect Academy Inc.",
-      description: "",
-      ogImageSrc:
-        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png",
-      canonical: ""
-    }
+    pageMetadata: generateDynamicMetadata(wrapQueriesWithLoadingProxy({}), {
+      pageRoute: "/about-us",
+      pagePath: "/about-us",
+      params: {},
+      query: {}
+    })
   }
 );
 

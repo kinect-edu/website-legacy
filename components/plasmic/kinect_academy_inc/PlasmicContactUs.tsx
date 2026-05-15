@@ -81,6 +81,50 @@ import Icon19Icon from "./icons/PlasmicIcon__Icon19"; // plasmic-import: GloFZO7
 import Icon17Icon from "./icons/PlasmicIcon__Icon17"; // plasmic-import: 7W9T4txEOvuQ/icon
 import Icon20Icon from "./icons/PlasmicIcon__Icon20"; // plasmic-import: UKWF1bySvIgm/icon
 
+const emptyProxy: any = new Proxy(() => "", {
+  get(_, prop) {
+    return prop === Symbol.toPrimitive ? () => "" : emptyProxy;
+  }
+});
+
+function wrapQueriesWithLoadingProxy($q: any): any {
+  return new Proxy($q, {
+    get(target, queryName) {
+      const query = target[queryName];
+      return !query || query.isLoading || !query.data ? emptyProxy : query;
+    }
+  });
+}
+
+export type PageCtx = {
+  pageRoute: string;
+  pagePath: string;
+  params: Record<string, string | string[] | undefined>;
+  query: Record<string, string | string[] | undefined>;
+};
+
+export function generateDynamicMetadata($q: any, $ctx: PageCtx) {
+  return {
+    title: "Contact Us | Kinect Academy Inc.",
+
+    openGraph: {
+      title: "Contact Us | Kinect Academy Inc.",
+
+      images: [
+        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png"
+      ]
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: "Contact Us | Kinect Academy Inc.",
+
+      images: [
+        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png"
+      ]
+    }
+  };
+}
+
 createPlasmicElementProxy;
 
 export type PlasmicContactUs__VariantMembers = {};
@@ -145,33 +189,34 @@ function PlasmicContactUs__RenderFunc(props: {
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
 
+  const pageMetadata = generateDynamicMetadata(
+    wrapQueriesWithLoadingProxy({}),
+    $ctx as PageCtx
+  );
+
   const styleTokensClassNames = _useStyleTokens();
 
   return (
     <React.Fragment>
       <Head>
         <meta name="twitter:card" content="summary_large_image" />
-        <title key="title">{PlasmicContactUs.pageMetadata.title}</title>
-        <meta
-          key="og:title"
-          property="og:title"
-          content={PlasmicContactUs.pageMetadata.title}
-        />
+        <title key="title">{pageMetadata.title}</title>
+        <meta key="og:title" property="og:title" content={pageMetadata.title} />
         <meta
           key="twitter:title"
           property="twitter:title"
-          content={PlasmicContactUs.pageMetadata.title}
+          content={pageMetadata.title}
         />
 
         <meta
           key="og:image"
           property="og:image"
-          content={PlasmicContactUs.pageMetadata.ogImageSrc}
+          content={pageMetadata.ogImageSrc}
         />
         <meta
           key="twitter:image"
           property="twitter:image"
-          content={PlasmicContactUs.pageMetadata.ogImageSrc}
+          content={pageMetadata.ogImageSrc}
         />
       </Head>
 
@@ -224,6 +269,7 @@ function PlasmicContactUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__kqa9M
                       )}
                       component={Link}
@@ -257,6 +303,7 @@ function PlasmicContactUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__sFygn
                       )}
                       component={Link}
@@ -292,6 +339,7 @@ function PlasmicContactUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__kcm6T
                       )}
                       component={Link}
@@ -324,6 +372,7 @@ function PlasmicContactUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__hQa4Z
                       )}
                       component={Link}
@@ -360,6 +409,7 @@ function PlasmicContactUs__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__a7Im5
                       )}
                       component={Link}
@@ -398,6 +448,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.button,
+                      projectcss.button__qrgzy,
                       projectcss.__wab_text,
                       sty.button
                     )}
@@ -408,6 +459,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__dw8Hr
                     )}
                     component={Link}
@@ -451,6 +503,7 @@ function PlasmicContactUs__RenderFunc(props: {
                   className={classNames(
                     projectcss.all,
                     projectcss.h1,
+                    projectcss.h1__qrgzy,
                     projectcss.__wab_text,
                     sty.h1
                   )}
@@ -458,14 +511,18 @@ function PlasmicContactUs__RenderFunc(props: {
                   <React.Fragment>
                     <React.Fragment>{"Join the "}</React.Fragment>
                     <span
-                      className={"plasmic_default__all plasmic_default__span"}
+                      className={
+                        "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                      }
                       style={{ color: "var(--token-Dd6gyjIVe7XT)" }}
                     >
                       {"Kinect"}
                     </span>
                     <React.Fragment>{""}</React.Fragment>
                     <span
-                      className={"plasmic_default__all plasmic_default__span"}
+                      className={
+                        "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                      }
                       style={{ color: "#51D1FF" }}
                     >
                       {" Academy"}
@@ -482,7 +539,9 @@ function PlasmicContactUs__RenderFunc(props: {
                 >
                   <React.Fragment>
                     <span
-                      className={"plasmic_default__all plasmic_default__span"}
+                      className={
+                        "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                      }
                       style={{ color: "var(--token-Dd6gyjIVe7XT)" }}
                     >
                       {"SENIOR HIGH SCHOOL | GAPAN CITY"}
@@ -578,6 +637,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h2,
+                      projectcss.h2__qrgzy,
                       projectcss.__wab_text,
                       sty.h2
                     )}
@@ -673,6 +733,7 @@ function PlasmicContactUs__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3__qkg9Z
                                 )}
@@ -867,6 +928,7 @@ function PlasmicContactUs__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3___0Lmnd
                                 )}
@@ -978,6 +1040,7 @@ function PlasmicContactUs__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3__ohfip
                                 )}
@@ -1282,6 +1345,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3__zI5K7
                     )}
@@ -1292,6 +1356,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__ehq7Q
                     )}
                     component={Link}
@@ -1324,6 +1389,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__bjt6I
                     )}
                     component={Link}
@@ -1356,6 +1422,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__sV53X
                     )}
                     component={Link}
@@ -1390,6 +1457,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3___8Ih7A
                     )}
@@ -1400,6 +1468,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__yjQ9J
                     )}
                     component={Link}
@@ -1432,6 +1501,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link___4ZaBq
                     )}
                     component={Link}
@@ -1464,6 +1534,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__wIc61
                     )}
                     component={Link}
@@ -1496,6 +1567,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__a0Nne
                     )}
                     component={Link}
@@ -1530,6 +1602,7 @@ function PlasmicContactUs__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3___7SOvi
                     )}
@@ -1693,14 +1766,12 @@ export const PlasmicContactUs = Object.assign(
     internalVariantProps: PlasmicContactUs__VariantProps,
     internalArgProps: PlasmicContactUs__ArgProps,
 
-    // Page metadata
-    pageMetadata: {
-      title: "Contact Us | Kinect Academy Inc.",
-      description: "",
-      ogImageSrc:
-        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png",
-      canonical: ""
-    }
+    pageMetadata: generateDynamicMetadata(wrapQueriesWithLoadingProxy({}), {
+      pageRoute: "/contact",
+      pagePath: "/contact",
+      params: {},
+      query: {}
+    })
   }
 );
 

@@ -84,6 +84,50 @@ import Icon19Icon from "./icons/PlasmicIcon__Icon19"; // plasmic-import: GloFZO7
 import Icon17Icon from "./icons/PlasmicIcon__Icon17"; // plasmic-import: 7W9T4txEOvuQ/icon
 import Icon20Icon from "./icons/PlasmicIcon__Icon20"; // plasmic-import: UKWF1bySvIgm/icon
 
+const emptyProxy: any = new Proxy(() => "", {
+  get(_, prop) {
+    return prop === Symbol.toPrimitive ? () => "" : emptyProxy;
+  }
+});
+
+function wrapQueriesWithLoadingProxy($q: any): any {
+  return new Proxy($q, {
+    get(target, queryName) {
+      const query = target[queryName];
+      return !query || query.isLoading || !query.data ? emptyProxy : query;
+    }
+  });
+}
+
+export type PageCtx = {
+  pageRoute: string;
+  pagePath: string;
+  params: Record<string, string | string[] | undefined>;
+  query: Record<string, string | string[] | undefined>;
+};
+
+export function generateDynamicMetadata($q: any, $ctx: PageCtx) {
+  return {
+    title: "Home | Kinect Academy Inc.",
+
+    openGraph: {
+      title: "Home | Kinect Academy Inc.",
+
+      images: [
+        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png"
+      ]
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: "Home | Kinect Academy Inc.",
+
+      images: [
+        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png"
+      ]
+    }
+  };
+}
+
 createPlasmicElementProxy;
 
 export type PlasmicHomepage__VariantMembers = {};
@@ -148,33 +192,34 @@ function PlasmicHomepage__RenderFunc(props: {
 
   const globalVariants = _useGlobalVariants();
 
+  const pageMetadata = generateDynamicMetadata(
+    wrapQueriesWithLoadingProxy({}),
+    $ctx as PageCtx
+  );
+
   const styleTokensClassNames = _useStyleTokens();
 
   return (
     <React.Fragment>
       <Head>
         <meta name="twitter:card" content="summary_large_image" />
-        <title key="title">{PlasmicHomepage.pageMetadata.title}</title>
-        <meta
-          key="og:title"
-          property="og:title"
-          content={PlasmicHomepage.pageMetadata.title}
-        />
+        <title key="title">{pageMetadata.title}</title>
+        <meta key="og:title" property="og:title" content={pageMetadata.title} />
         <meta
           key="twitter:title"
           property="twitter:title"
-          content={PlasmicHomepage.pageMetadata.title}
+          content={pageMetadata.title}
         />
 
         <meta
           key="og:image"
           property="og:image"
-          content={PlasmicHomepage.pageMetadata.ogImageSrc}
+          content={pageMetadata.ogImageSrc}
         />
         <meta
           key="twitter:image"
           property="twitter:image"
-          content={PlasmicHomepage.pageMetadata.ogImageSrc}
+          content={pageMetadata.ogImageSrc}
         />
       </Head>
 
@@ -228,6 +273,7 @@ function PlasmicHomepage__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__boAwQ
                       )}
                       component={Link}
@@ -261,6 +307,7 @@ function PlasmicHomepage__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__pbOwj
                       )}
                       component={Link}
@@ -293,6 +340,7 @@ function PlasmicHomepage__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link___970O
                       )}
                       component={Link}
@@ -328,6 +376,7 @@ function PlasmicHomepage__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link___3MgSo
                       )}
                       component={Link}
@@ -364,6 +413,7 @@ function PlasmicHomepage__RenderFunc(props: {
                       className={classNames(
                         projectcss.all,
                         projectcss.a,
+                        projectcss.a__qrgzy,
                         sty.link__fQsii
                       )}
                       component={Link}
@@ -402,6 +452,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.button,
+                      projectcss.button__qrgzy,
                       projectcss.__wab_text,
                       sty.button__svrIc
                     )}
@@ -412,6 +463,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__wWs4V
                     )}
                     component={Link}
@@ -460,6 +512,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h1,
+                      projectcss.h1__qrgzy,
                       projectcss.__wab_text,
                       sty.h1
                     )}
@@ -467,14 +520,18 @@ function PlasmicHomepage__RenderFunc(props: {
                     <React.Fragment>
                       <React.Fragment>{"Join the "}</React.Fragment>
                       <span
-                        className={"plasmic_default__all plasmic_default__span"}
+                        className={
+                          "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                        }
                         style={{ color: "var(--token-Dd6gyjIVe7XT)" }}
                       >
                         {"Kinect"}
                       </span>
                       <React.Fragment>{""}</React.Fragment>
                       <span
-                        className={"plasmic_default__all plasmic_default__span"}
+                        className={
+                          "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                        }
                         style={{ color: "#51D1FF" }}
                       >
                         {" Academy"}
@@ -491,7 +548,9 @@ function PlasmicHomepage__RenderFunc(props: {
                   >
                     <React.Fragment>
                       <span
-                        className={"plasmic_default__all plasmic_default__span"}
+                        className={
+                          "plasmic_default__all plasmic_default__span plasmic_default__span__qrgzy"
+                        }
                         style={{ color: "var(--token-Dd6gyjIVe7XT)" }}
                       >
                         {"SENIOR HIGH SCHOOL | GAPAN CITY"}
@@ -612,6 +671,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h2,
+                      projectcss.h2__qrgzy,
                       projectcss.__wab_text,
                       sty.h2__tmW09
                     )}
@@ -684,6 +744,7 @@ function PlasmicHomepage__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3___4CxSf
                                 )}
@@ -747,6 +808,7 @@ function PlasmicHomepage__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3__sebwr
                                 )}
@@ -812,6 +874,7 @@ function PlasmicHomepage__RenderFunc(props: {
                                 className={classNames(
                                   projectcss.all,
                                   projectcss.h3,
+                                  projectcss.h3__qrgzy,
                                   projectcss.__wab_text,
                                   sty.h3__etxDk
                                 )}
@@ -855,6 +918,7 @@ function PlasmicHomepage__RenderFunc(props: {
                   className={classNames(
                     projectcss.all,
                     projectcss.h2,
+                    projectcss.h2__qrgzy,
                     projectcss.__wab_text,
                     sty.h2__jwgYj
                   )}
@@ -934,6 +998,7 @@ function PlasmicHomepage__RenderFunc(props: {
                               className={classNames(
                                 projectcss.all,
                                 projectcss.h3,
+                                projectcss.h3__qrgzy,
                                 projectcss.__wab_text,
                                 sty.h3__dNeGe
                               )}
@@ -1027,6 +1092,7 @@ function PlasmicHomepage__RenderFunc(props: {
                               className={classNames(
                                 projectcss.all,
                                 projectcss.h3,
+                                projectcss.h3__qrgzy,
                                 projectcss.__wab_text,
                                 sty.h3__bpdoz
                               )}
@@ -1086,6 +1152,7 @@ function PlasmicHomepage__RenderFunc(props: {
                 className={classNames(
                   projectcss.all,
                   projectcss.h2,
+                  projectcss.h2__qrgzy,
                   projectcss.__wab_text,
                   sty.h2__ypCO
                 )}
@@ -1372,6 +1439,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3__aVhw1
                     )}
@@ -1382,6 +1450,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__wxIi
                     )}
                     component={Link}
@@ -1414,6 +1483,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link___65YZr
                     )}
                     component={Link}
@@ -1446,6 +1516,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__resN2
                     )}
                     component={Link}
@@ -1480,6 +1551,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3__kw8Fk
                     )}
@@ -1490,6 +1562,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__mzkXd
                     )}
                     component={Link}
@@ -1522,6 +1595,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link___3OdBi
                     )}
                     component={Link}
@@ -1554,6 +1628,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__pMb82
                     )}
                     component={Link}
@@ -1586,6 +1661,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.a,
+                      projectcss.a__qrgzy,
                       sty.link__f3W9
                     )}
                     component={Link}
@@ -1620,6 +1696,7 @@ function PlasmicHomepage__RenderFunc(props: {
                     className={classNames(
                       projectcss.all,
                       projectcss.h3,
+                      projectcss.h3__qrgzy,
                       projectcss.__wab_text,
                       sty.h3__oe8Rh
                     )}
@@ -1775,14 +1852,12 @@ export const PlasmicHomepage = Object.assign(
     internalVariantProps: PlasmicHomepage__VariantProps,
     internalArgProps: PlasmicHomepage__ArgProps,
 
-    // Page metadata
-    pageMetadata: {
-      title: "Home | Kinect Academy Inc.",
-      description: "",
-      ogImageSrc:
-        "https://site-assets.plasmic.app/4c83f9f70da81d0a474d8d59d6e1dc3e.png",
-      canonical: ""
-    }
+    pageMetadata: generateDynamicMetadata(wrapQueriesWithLoadingProxy({}), {
+      pageRoute: "/",
+      pagePath: "/",
+      params: {},
+      query: {}
+    })
   }
 );
 
